@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" crossorigin="anonymous" />    
         
         <!-- Codemirror -->
-        <link rel="stylesheet" href="https://server.cocreate.app/CoCreate-components/CoCreate-codemirror/src/CoCreate-codemirror.css" type="text/css" />
+        <link rel="stylesheet" href="https://server.cocreate.app/CoCreate-plugins/CoCreate-codemirror/src/CoCreate-codemirror.css" type="text/css" />
         <link rel=stylesheet href="https://codemirror.net/lib/codemirror.css"  async defer>
 
         <!-- Highlight.js-->
@@ -44,16 +44,39 @@
             <p class="max-width:500px margin:20px_0px">Select an html component, based on the click event, using the data-attributes you can create groups of elements just like an input radio button.</p>
             <div id="Selected-section" class="display:flex flex-wrap:wrap">
                 <div class="flex-grow:1 min-width:300px width:50% padding:0px_10px margin:20px_0px">
-    
-                    <h2 class="border-bottom:1px_solid_lightgrey padding:5px_0px">Reference</h2>
+                <h2 class="border-bottom:1px_solid_lightgrey padding:5px_0px">Install</h2>
+                <pre><code class="language-javascript">npm install cocreate-boilerplate</code></pre>
+                <p class="padding:10px_0px">Or you can use cdn link:</p>
+                <pre><code class="language-javascript">https://cdn.cocreate.app/CoCreate-boilerplate.min.js</code></pre>
+
+                <h2 class="border-bottom:1px_solid_lightgrey margin-top:80px padding:5px_0px">Usage</h2>
                     <div class="">
                         <p class="padding:10px_0px">This is Selected reference</p>
                 
                         <div class="flex-grow:1 min-width:300px width:100%">
                             <pre>
-                                <code>&#x3C;div data-selected=&#x22;yellow&#x22; data-selected_group=&#x22;2&#x22; class=&#x22;green&#x22;&#x3E;1 tab&#x3C;/div&#x3E;
+                                <code>
+&#x3C;style type=&#x22;text/css&#x22;&#x3E;
+  .green{background:green}
+  .yellow{background:yellow}
+  .blue{background:blue}
+  .red{background:red}
+  .active{
+    background-color:blue;
+  }
+&#x3C;/style&#x3E;
+
+&#x3C;div data-selected=&#x22;yellow&#x22; data-selected_group=&#x22;2&#x22; class=&#x22;green&#x22;&#x3E;1 tab&#x3C;/div&#x3E;
 &#x3C;div data-selected=&#x22;blue&#x22; data-selected_group=&#x22;2&#x22; class=&#x22;green&#x22;&#x3E;2 tab&#x3C;/div&#x3E;
-&#x3C;div data-selected=&#x22;red&#x22; data-selected_group=&#x22;2&#x22; class=&#x22;green&#x22;&#x3E;3 tab&#x3C;/div&#x3E;</code>
+&#x3C;div data-selected=&#x22;red&#x22; data-selected_group=&#x22;2&#x22; class=&#x22;green&#x22;&#x3E;3 tab&#x3C;/div&#x3E;
+
+------------------
+
+* data-selected will be added to the attribute data-selected attribute
+
+&#x3C;div data-selected=&#x22;active&#x22; data-selected_attribute=&#x22;data-test&#x22; data-selected_group=&#x22;uno&#x22; data-test=&#x22;&#x22; class=&#x22;test&#x22;&#x3E;1 tab&#x3C;/div&#x3E;
+
+                                </code>
                             </pre>
                         </div>
                         <p class="padding:10px_0px">This is Selected reference</p>
@@ -61,12 +84,16 @@
                     <h2 class="border-bottom:1px_solid_lightgrey padding:5px_0px">Attributes</h2>
                     <ul class="list-style-type:none ">
                         <li class="padding:15px_0px border-bottom:1px_solid_lightgrey">
-                            <h4><span>data-selected</span> <span class="cocreate-badge success">string</span> <span class="cocreate-badge error">required</span></h4>
-                            <p>Attribute to initialize the component</p>
+                            <h4><span>data-selected</span> <span class="cocreate-badge success">string</span> <span class="cocreate-badge danger">required</span></h4>
+                            <p>Attribute to initialize the component and it also serves to assign the attribute that is determined, the default attribute is class</p>
                         </li>
                         <li class="padding:15px_0px border-bottom:1px_solid_lightgrey">
                             <h4><span>data-selected_group</span> <span class="cocreate-badge success">string</span> <span class="cocreate-badge warning">optional</span></h4>
                             <p>It is used to create groups of elements, otherwise a default group is created</p>
+                        </li>
+                        <li class="padding:15px_0px border-bottom:1px_solid_lightgrey">
+                            <h4><span>data-selected_attribute</span> <span class="cocreate-badge success">string</span> <span class="cocreate-badge warning">optional</span></h4>
+                            <p>is used to add and remove the value found in data-selected, by default class is used</p>
                         </li>
                     </ul>
                 </div>
