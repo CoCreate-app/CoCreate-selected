@@ -6,7 +6,7 @@ const CoCreateSelected = {
 	
 	initElement: function(container) {
 		let mainContainer = container || document;
-		const self = this;
+
 		if (!mainContainer.querySelectorAll) {
 			return;
 		}
@@ -16,12 +16,12 @@ const CoCreateSelected = {
 			elements = [mainContainer];
 		}
 		
-		elements.forEach((element) => self.__initElementEvent(element));
+		elements.forEach((element) => this.__initElementEvent(element));
 	},
 	
 	__initElementEvent: function(element) {
 		
-		const self = this;
+		
 		let values = element.dataset['selected'].split(',');
 		if (!values || values.length === 0) {
 			return;
@@ -35,7 +35,7 @@ const CoCreateSelected = {
 		document.addEventListener('click', function(event) {
 			if (!element.hasAttribute("data-selected_group") && !element.contains(event.target)) {
 				
-				self.__removeSelectedStatus(element, values);
+				this.__removeSelectedStatus(element, values);
 			}//
 		})
 	},
