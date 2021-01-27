@@ -1,4 +1,6 @@
+
 const CoCreateSelected = {
+
 
 	init: function() {
 		this.initElement(document);
@@ -6,72 +8,79 @@ const CoCreateSelected = {
 	
 	initElement: function(container) {
 		let mainContainer = container || document;
-
+		
 		if (!mainContainer.querySelectorAll) {
 			return;
 		}
 		
 		let elements = mainContainer.querySelectorAll(`[data-selected]`);
-		if (elements.length === 0 && mainContainer != document && mainContainer.hasAttributes(`[data-selected]`)) {
+		if (elements.length === 0 && mainContainer != document && mainContainer.hasAttribute(`[data-selected]`)) {
 			elements = [mainContainer];
 		}
-		
-		elements.forEach((element) => this.__initElementEvent(element));
+		const self = this;
+		elements.forEach((element) => self.__initElementEvent(element));
 	},
 	
 	__initElementEvent: function(element) {
-		
-		
-		let values = element.dataset['selected'].split(',');
+		const selectedValue = element.getAttribute('data-selected') || "";
+		let values = selectedValue.split(',');
 		if (!values || values.length === 0) {
 			return;
 		}
 		values = values.map(x => x.trim())
 		
+		const self = this;
+		
+		// if (CoCreateObserver.getInitialized(element)) {
+		// 	return;
+		// }
+		CoCreateObserver.setInitialized(element)
+		
 		element.addEventListener('click', function() {
-			this.__changeElementStatus(element, values)
+			self.__changeElementStatus(element, values)
 		});
 		
 		document.addEventListener('click', function(event) {
 			if (!element.hasAttribute("data-selected_group") && !element.contains(event.target)) {
 				
-				this.__removeSelectedStatus(element, values);
-			}//
+				self.__removeSelectedStatus(element, values);
+			}
 		})
 	},
 	
 	__changeElementStatus: function(element, values) {
 		let target_attribute = element.dataset[`selected_attribute`] || 'class'; 
 		let elements = this.__getTargetElements(element);
+		const self = this;
 
 		let selectedGroup = element.dataset['selected_group'];
 		let group = selectedGroup ? `[data-selected_group="${selectedGroup}"]` : ':not([data-selected_group])';
 
 		let previouSelected = document.querySelector('[data-selected]' + group + '[selected]');
 		
+		// if (previouSelected.isSameNode(element)) {
+		// 	return ;
+		// }
+		
 		if (previouSelected) {
 			let previousValues = previouSelected.dataset['selected'].split(',').map(x => x.trim());
-            let previousTargetAttr = previouSelected.dataset['selected_attribute'] || 'class';
-			this.setValue(previouSelected, previousTargetAttr, previousValues);
+			this.__removeSelectedStatus(previouSelected, previousValues)
 		}
 		
 		values = values.map(x => x.trim());
 		elements.forEach((el) => {
-			this.setValue(el, target_attribute, values);
+			self.setValue(el, target_attribute, values);
 		})
 	},
 	
 	__removeSelectedStatus: function(element, values) {
 		let attrName = element.dataset[`selected_attribute`] || 'class';
-
-		let currentAttrValue = element.getAttribute(attrName) || "";
-		let attrValues = currentAttrValue;
 		
 		let elements = this.__getTargetElements(element);
 		
 		elements.forEach(el => {
 			if (attrName === 'class') {
-				attrValues = currentAttrValue.split(' ').map(x => x.trim());
+				let attrValues = (el.getAttribute(attrName) || "").split(' ').map(x => x.trim());
 				let currentValue = values.filter(x => attrValues.includes(x))[0] || '';
 				if (currentValue) {
 					el.classList.remove(currentValue);
@@ -85,7 +94,6 @@ const CoCreateSelected = {
 	},
 	
 	setValue: function(element, attrName, values) {
-		element.toggleAttribute("selected");
 		let currentAttrValue = element.getAttribute(attrName) || ""; 
 		let attrValues = currentAttrValue;
 		if (attrName === 'class') {
@@ -94,15 +102,17 @@ const CoCreateSelected = {
 		
 		let oldValue = values.filter(x => attrValues.includes(x))[0] || '';
 		let newValue = this.__getNextValue(values, oldValue)
+	
+		element.setAttribute('selected', "")
+		
+		if (oldValue === newValue) {
+			return;
+		}
 		
 		if (attrName === 'class') {
 			if (oldValue != '') {
 				element.classList.remove(oldValue);
-				if (values.length === 1) {
-					return;
-				}
 			}
-			
 			if (newValue != '') {
 				element.classList.add(newValue);
 			}
@@ -112,7 +122,7 @@ const CoCreateSelected = {
 	},
 	
 	__getTargetElements: function(element) {
-		let targetSelector = element.dataset[`selected_element`];
+		let targetSelector = element.dataset[`selected_target`];
 		let elements = [element];
 		if (targetSelector) {
 			elements = Array.from(document.querySelectorAll(targetSelector));
@@ -132,4 +142,16 @@ const CoCreateSelected = {
 	}
 }
 
+export default CoCreateSelected;
+
 CoCreateSelected.init();
+// CoCreateInit.register('CoCreateSelected', CoCreateSelected, CoCreateSelected.initElement);
+
+CoCreateObserver.add({ 
+	name: 'CoCreateSelected', 
+	observe: ['subtree', 'childList'],
+	include: '[data-selected]', 
+	task: function(mutation) {
+		CoCreateSelected.initElement(mutation.target)
+	}
+})
