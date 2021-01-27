@@ -22,8 +22,8 @@ module.exports = {
             document_id: "",
             data:{
                 collection: "files",
-                name: "html",
                 document_id: "6011ee7920b8221182666b48",
+                name: "html",
                 domains: ["cocreate.app", "server.cocreate.app", "ws.cocreate.app"],
                 route: "/docs/selected",
             }
