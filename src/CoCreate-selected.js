@@ -173,7 +173,7 @@ const CoCreateSelected = {
 
 CoCreateSelected.init();
 
-CoCreate.observer.add({ 
+CoCreate.observer.init({ 
 	name: 'CoCreateSelected', 
 	observe: ['subtree', 'childList'],
 	include: '[data-selected]', 
