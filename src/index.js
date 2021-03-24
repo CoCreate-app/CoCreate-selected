@@ -34,7 +34,8 @@ const CoCreateSelected = {
 		// if (CoCreate.observer.getInitialized(element)) {
 		// 	return;
 		// }
-		CoCreate.observer.setInitialized(element)
+		// CoCreate.observer.setInitialized(element)
+		element['co_initialized_'] = true;
 		
 		element.addEventListener('click', function() {
 			self.__changeElementStatus(element, values)
@@ -142,45 +143,56 @@ const CoCreateSelected = {
 	},
 	
 	config: function({
-			sourceDocument,
+			srcDocument,
 			destDocument,
 			wrap,
-			newValueCB,
-			elementSelector,
-			targetSelector,
-			source,
-			destination,
+			callback = ()=>'',
+			selector,
+			target,
+			srcAttribute,
+			destAttribute,
 			type = "post",
 			eventType = "click",
 		}) 
 	{
-
-		sourceDocument.addEventListener(eventType, (e) => {
-			let element = e.target;
-			if (e.target.matches(elementSelector) && element.hasAttribute(source)) {
-				let targets = destDocument.querySelectorAll(targetSelector);
+	console.log('config executed', {
+			srcDocument,
+			destDocument,
+			wrap,
+			callback ,
+			selector,
+			target,
+			srcAttribute,
+			destAttribute,
+			type ,
+			eventType ,
+		})
+		srcDocument.addEventListener(eventType, (e) => {
+			if (e.target.matches(selector) || (srcAttribute && e.target.hasAttribute(srcAttribute))) {
+				let targets = destDocument.querySelectorAll(target);
 				targets.forEach((target) => {
-					let value = element.getAttribute(source);
+					let value = e.target.getAttribute(srcAttribute);
 					if (wrap) value = wrap.replace("$1", value);
-					else if (newValueCB) value = newValueCB(element, target, value)
-					target.setAttribute(destination, value);
+					if(destAttribute)
+					target.setAttribute(destAttribute, value);
+					callback(e.target, target)
 				});
 			}
-			if (type === "cut") element.removeAttribute(source);
+			if (type === "cut") e.target.removeAttribute(srcAttribute);
 		});	
 	}
 }
 
 CoCreateSelected.init();
 
-CoCreate.observer.init({ 
-	name: 'CoCreateSelected', 
-	observe: ['subtree', 'childList'],
-	include: '[data-selected]', 
-	callback: function(mutation) {
-		CoCreateSelected.initElement(mutation.target)
-	}
-});
+// CoCreate.observer.init({ 
+// 	name: 'CoCreateSelected', 
+// 	observe: ['subtree', 'childList'],
+// 	include: '[data-selected]', 
+// 	callback: function(mutation) {
+// 		CoCreateSelected.initElement(mutation.target)
+// 	}
+// });
 
 export default CoCreateSelected;
 
