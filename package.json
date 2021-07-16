@@ -1,6 +1,6 @@
 {
   "name": "@cocreate/selected",
-  "version": "1.0.14",
+  "version": "1.0.16",
   "description": "A simple selected component in vanilla javascript. Easily configured using HTML5 data-attributes and/or JavaScript API.",
   "keywords": [
     "selected",
@@ -61,6 +61,6 @@
     "webpack-log": "^3.0.1"
   },
   "dependencies": {
-    "@cocreate/docs": "^1.1.29"
+    "@cocreate/docs": "^1.1.32"
   }
 }
