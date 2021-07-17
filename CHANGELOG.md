@@ -1,3 +1,11 @@
+## [1.0.17](https://github.com/CoCreate-app/CoCreate-selected/compare/v1.0.16...v1.0.17) (2021-07-17)
+
+
+### Bug Fixes
+
+* init and update demos scripts ([a3ab290](https://github.com/CoCreate-app/CoCreate-selected/commit/a3ab29034e02c32280d8c78d8f5ccd273ed01615))
+* workflows ([47d303c](https://github.com/CoCreate-app/CoCreate-selected/commit/47d303c97f666de45cf72bb3f5785e5e92fec539))
+
 ## [1.0.16](https://github.com/CoCreate-app/CoCreate-selected/compare/v1.0.15...v1.0.16) (2021-07-14)
 
 
